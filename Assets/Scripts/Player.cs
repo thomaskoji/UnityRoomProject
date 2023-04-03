@@ -10,18 +10,28 @@ public class Player : MonoBehaviour
     public float attackRadius;
     public LayerMask enemyLayer;
     public AudioClip attackSE;
+    public AudioClip deathAttackSE;
+
+    bool canAttack;
+
+    private void Start() 
+    {
+        canAttack = true;    
+    }
 
     private void Update() 
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (canAttack == true)
         {
-            Attack();
-        }    
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Attack();
+            } 
+        }        
     }
 
     void Attack()
     {
-        GameManager.instance.PlaySe(attackSE);
         // サークル範囲内に、レイヤーがEnemyのオブジェクトがいたら取得
         Collider2D[] hitEnemys = 
         Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
@@ -29,8 +39,18 @@ public class Player : MonoBehaviour
         // 取得したそれぞれのEnemyにダメージを与える
         foreach (Collider2D hitEnemy in hitEnemys)
         {
-            Debug.Log(hitEnemy.gameObject.name + "に攻撃");
-            hitEnemy.GetComponent<Enemy>().Damage(attackPower);
+            var enemy = hitEnemy.GetComponent<Enemy>();   
+            if (enemy.isExhausted == true)
+            {
+                GameManager.instance.PlaySe(deathAttackSE);
+                enemy.Death();
+                canAttack = false;
+            }
+            else if (enemy.isExhausted == false)
+            {
+                GameManager.instance.PlaySe(attackSE);
+                enemy.Damage(attackPower);
+            }
         }
     }
 

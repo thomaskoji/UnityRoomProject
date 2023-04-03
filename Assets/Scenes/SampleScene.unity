@@ -605,6 +605,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 1042037823}
   epBar: {fileID: 1386652183}
   enemyName: {fileID: 2096619978}
+  isExhausted: 0
 --- !u!212 &1042037823
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1046,6 +1047,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   attackSE: {fileID: 8300000, guid: 0fc045c0e70452541b79ed7ff62fc880, type: 3}
+  deathAttackSE: {fileID: 8300000, guid: 31363ca35625a6643895a0e69c339ed6, type: 3}
 --- !u!212 &1837662540
 SpriteRenderer:
   m_ObjectHideFlags: 0

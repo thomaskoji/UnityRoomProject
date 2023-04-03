@@ -6,14 +6,14 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    // 疲労ポイント
-    public float exhaustionPoint;
     // 疲労限界値（敵によって疲労限界値をインスペクターから設定）
     public float exhaustionLimit;
     public SpriteRenderer spriteRenderer;
     // exhaustionPointバー
     public Slider epBar;
     public Text enemyName;
+
+    public bool isExhausted;
 
     Tweener _shakeTweener;
     Vector3 _initPosition;
@@ -24,27 +24,36 @@ public class Enemy : MonoBehaviour
         epBar.value = 0;
         epBar.maxValue = exhaustionLimit;
         enemyName.text = this.gameObject.name;
+        isExhausted = false;
     }
 
     private void Update() {
         ExhaustionCheck();
+        epBar.value -= Time.deltaTime * 1.5f;
     }
     
     public void Damage(int damage)
     {
-        StartCoroutine(Flashing());
+        Flashing(2, 0.1f);
         StartShake(0.5f, 0.25f, 30);
-        exhaustionPoint += damage;
         epBar.value += damage;
     }
 
     //　疲労が限界にきたら・・・
     public void ExhaustionCheck()
     {
-        if (exhaustionPoint == epBar.maxValue)
+        if (epBar.value == exhaustionLimit)
         {
+            isExhausted = true;
+            Flashing(100, 0.1f);
             Debug.Log("隙あり！！！！！！！！致命の一撃だ！！！！！");
         }
+    }
+
+    public void Death()
+    {
+        StartShake(2f, 0.6f, 30);
+        Destroy(this.gameObject, 2.0f);
     }
 
     #region 演出処理
@@ -67,21 +76,25 @@ public class Enemy : MonoBehaviour
     }
 
     // ダメージを受けたらEnemyが点滅する処理
-    IEnumerator Flashing()
+    void Flashing(int index, float waitingTime)
+    {
+        for (int i = 0; i < index; i++)
+        {
+            StartCoroutine(FlashDetail(waitingTime));
+        }           
+    }
+
+    IEnumerator FlashDetail(float waitingTime)
     {
         var color = spriteRenderer.color;
-
-        for (int i = 0; i < 2; i++)
-        {
-            color.g = 0.5f;
-            color.b = 0.5f;
-            spriteRenderer.color = color;
-            yield return new WaitForSeconds(0.1f);
-            color.g = 0.2f;
-            color.b = 0.2f;
-            spriteRenderer.color = color; 
-            yield return new WaitForSeconds(0.1f);
-        }           
+        color.g = 0.5f;
+        color.b = 0.5f;
+        spriteRenderer.color = color;
+        yield return new WaitForSeconds(waitingTime);
+        color.g = 0.2f;
+        color.b = 0.2f;
+        spriteRenderer.color = color; 
+        yield return new WaitForSeconds(waitingTime);
     }
 
     #endregion
