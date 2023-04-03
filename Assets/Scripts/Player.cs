@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public Transform attackPoint;
     public float attackRadius;
     public LayerMask enemyLayer;
+    public AudioClip attackSE;
 
     private void Update() 
     {
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
 
     void Attack()
     {
+        GameManager.instance.PlaySe(attackSE);
         // サークル範囲内に、レイヤーがEnemyのオブジェクトがいたら取得
         Collider2D[] hitEnemys = 
         Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);

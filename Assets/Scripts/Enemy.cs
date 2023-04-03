@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     // exhaustionPointバー
     public Slider epBar;
+    public Text enemyName;
 
     Tweener _shakeTweener;
     Vector3 _initPosition;
@@ -22,6 +23,7 @@ public class Enemy : MonoBehaviour
         _initPosition = transform.position;
         epBar.value = 0;
         epBar.maxValue = exhaustionLimit;
+        enemyName.text = this.gameObject.name;
     }
 
     private void Update() {
