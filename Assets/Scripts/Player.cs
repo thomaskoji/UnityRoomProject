@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
 
     void Attack()
     {
-        // サークル範囲内にEnemyレイヤーがいたら取得
+        // サークル範囲内に、レイヤーがEnemyのオブジェクトがいたら取得
         Collider2D[] hitEnemys = 
         Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
         
