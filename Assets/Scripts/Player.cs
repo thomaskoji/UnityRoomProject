@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    
     public int attackPower = 10;
     public Transform attackPoint;
     public float attackRadius;
     public LayerMask enemyLayer;
     public AudioClip attackSE;
     public AudioClip deathAttackSE;
-    public SpriteRenderer spriteRenderer;
     bool canAttack;
     bool canDeathAttack;
 
@@ -19,7 +17,6 @@ public class Player : MonoBehaviour
     {
         canAttack = true;
         canDeathAttack = false;
-        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Update() 
@@ -39,15 +36,6 @@ public class Player : MonoBehaviour
             {
                 DeahAttack(hitEnemys);
             }
-            
-            if (Input.GetKey(KeyCode.E))
-            {
-                Guard();
-            }
-            else if (Input.GetKeyUp(KeyCode.E))
-            {
-                ResetColor();
-            }  
         }        
     }
 
@@ -76,17 +64,6 @@ public class Player : MonoBehaviour
                 enemy.Death();
             }
         }
-    }
-
-
-    void Guard()
-    {
-        spriteRenderer.color = Color.yellow;
-    }
-
-    void ResetColor()
-    {
-        spriteRenderer.color = Color.blue;
     }
 
     // AttackPointの表示
