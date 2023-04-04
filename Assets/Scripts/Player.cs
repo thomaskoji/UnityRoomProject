@@ -11,12 +11,12 @@ public class Player : MonoBehaviour
     public AudioClip attackSE;
     public AudioClip deathAttackSE;
     bool canAttack;
-    bool canDeathAttack;
+    // bool canDeathAttack;
 
     private void Start() 
     {
         canAttack = true;
-        canDeathAttack = false;
+        // canDeathAttack = false;
     }
 
     private void Update() 

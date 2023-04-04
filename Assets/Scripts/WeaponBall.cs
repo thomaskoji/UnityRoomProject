@@ -14,36 +14,49 @@ public class WeaponBall : MonoBehaviour
 
     void Update()
     {
+        // 左クリック＋方向キーで各方向から攻撃
+        Mouse(0);
+        // 右クリックで防御＋方向キーで各方向へ防御
+        Mouse(1);
+    }
+
+    void Mouse(int num)
+    {
         var x = transform.localScale.x;
         var y = transform.localScale.y;
         
-        if (Input.GetMouseButton(1) && Input.GetKey(KeyCode.W))
+        if (Input.GetMouseButton(num) && Input.GetKey(KeyCode.W))
         {
-            Guard(guardFrontPos, x, scaleValue);
+            if (num == 0) ChangeShape(guardFrontPos, scaleValue, y); 
+            if (num == 1) ChangeShape(guardFrontPos, x, scaleValue);   
         }
 
-        if (Input.GetMouseButton(1) && Input.GetKey(KeyCode.D))
+        if (Input.GetMouseButton(num) && Input.GetKey(KeyCode.D))
         {
-            Guard(guardRightPos, scaleValue, y);      
+            if (num == 0) ChangeShape(guardRightPos, x, scaleValue); 
+            if (num == 1) ChangeShape(guardRightPos, scaleValue, y);      
         }
 
-        if (Input.GetMouseButton(1) && Input.GetKey(KeyCode.S))
+        if (Input.GetMouseButton(num) && Input.GetKey(KeyCode.S))
         {
-            Guard(guardBackPos, x, scaleValue);          
+            if (num == 0) ChangeShape(guardBackPos, scaleValue, y);
+            if (num == 1) ChangeShape(guardBackPos, x, scaleValue);          
         }
 
-        if (Input.GetMouseButton(1) && Input.GetKey(KeyCode.A))
+        if (Input.GetMouseButton(num) && Input.GetKey(KeyCode.A))
         {
-            Guard(guardLeftPos, scaleValue, y);          
+            if (num == 0) ChangeShape(guardLeftPos, x, scaleValue);
+            if (num == 1) ChangeShape(guardLeftPos, scaleValue, y);          
         }
 
-        if (Input.GetMouseButtonUp(1))
+        if (Input.GetMouseButtonUp(num))
         {
-            Guard(defaultPos, defaustScaleValue, defaustScaleValue);            
+            ChangeShape(defaultPos, defaustScaleValue, defaustScaleValue);            
         }
     }
 
-    void Guard (Transform pos, float xScaleValue, float yScaleValue)
+    // 攻撃、もしくは防御によってWeaponBallの形を変える
+    void ChangeShape (Transform pos, float xScaleValue, float yScaleValue)
     {
         transform.position = 
         Vector3.MoveTowards(transform.position, pos.position, 1);
